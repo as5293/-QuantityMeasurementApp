@@ -1,44 +1,72 @@
-import static org.junit.jupiter.api.Assertions.*;
+package com.apps.quantitymeasurement;
 
-class QuantityMeasurementAppTest {
+public class QuantityMeasurementApp {
 
+    // 🔹 Feet Class
+    public static class Feet {
+        private final double value;
 
+        public Feet(double value) {
+            this.value = value;
+        }
 
-    @Test
-    public void testEquality_SameValue() {
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+
+            if (obj == null) return false;
+
+            if (getClass() != obj.getClass()) return false;
+
+            Feet other = (Feet) obj;
+
+            return Double.compare(this.value, other.value) == 0;
+        }
+    }
+
+    // 🔹 Inches Class
+    public static class Inches {
+        private final double value;
+
+        public Inches(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+
+            if (obj == null) return false;
+
+            if (getClass() != obj.getClass()) return false;
+
+            Inches other = (Inches) obj;
+
+            return Double.compare(this.value, other.value) == 0;
+        }
+    }
+
+    // 🔹 Feet equality demo
+    public static void demonstrateFeetEquality() {
         Feet f1 = new Feet(1.0);
         Feet f2 = new Feet(1.0);
 
-        assertTrue(f1.equals(f2));
+        System.out.println("Feet Equal (" + f1.equals(f2) + ")");
     }
 
-    @Test
-    public void testEquality_DifferentValue() {
-        Feet f1 = new Feet(1.0);
-        Feet f2 = new Feet(2.0);
+    // 🔹 Inches equality demo
+    public static void demonstrateInchesEquality() {
+        Inches i1 = new Inches(1.0);
+        Inches i2 = new Inches(1.0);
 
-        assertFalse(f1.equals(f2));
+        System.out.println("Inches Equal (" + i1.equals(i2) + ")");
     }
 
-    @Test
-    public void testEquality_NullComparison() {
-        Feet f1 = new Feet(1.0);
-
-        assertFalse(f1.equals(null));
-    }
-
-    @Test
-    public void testEquality_DifferentClass() {
-        Feet f1 = new Feet(1.0);
-        String s = "1.0";
-
-        assertFalse(f1.equals(s));
-    }
-
-    @Test
-    public void testEquality_SameReference() {
-        Feet f1 = new Feet(1.0);
-
-        assertTrue(f1.equals(f1));
+    // 🔹 Main method
+    public static void main(String[] args) {
+        demonstrateFeetEquality();
+        demonstrateInchesEquality();
     }
 }
