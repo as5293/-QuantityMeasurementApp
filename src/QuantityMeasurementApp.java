@@ -3,8 +3,15 @@ package com.apps.quantitymeasurement;
 public class Length {
 
     private double value;
-    private LengthUnit unit;
+    private LengthUnit unit;`+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    public Length(double value, LengthUnit unit) {
+        if (unit == null) {
+            throw new IllegalArgumentException("Unit cannot be null");
+        }
+        this.value = value;
+        this.unit = unit;
+    }
 
     public enum LengthUnit {
         FEET(12.0),
@@ -23,57 +30,35 @@ public class Length {
         }
     }
 
-
-    public Length(double value, LengthUnit unit) {
-        if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
-        if (!Double.isFinite(value)) throw new IllegalArgumentException("Invalid value");
-
-        this.value = value;
-        this.unit = unit;
-    }
-
-    // 🔹 Convert to base (inches)
     private double toBase() {
         return value * unit.getFactor();
     }
 
-    // 🔹 Instance conversion (returns new object)
-    public Length convertTo(LengthUnit target) {
-        if (target == null) throw new IllegalArgumentException("Target unit null");
+    public Length add(Length other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other length cannot be null");
+        }
 
-        double base = toBase();
-        double converted = base / target.getFactor();
+        double sumInBase = this.toBase() + other.toBase();
+        double result = sumInBase / this.unit.getFactor();
 
-        return new Length(converted, target);
+        return new Length(result, this.unit);
     }
 
-    // 🔹 STATIC conversion (IMPORTANT API)
-    public static double convert(double value, LengthUnit source, LengthUnit target) {
+    public static double convert(double value, LengthUnit from, LengthUnit to) {
+        if (from == null || to == null) {
+            throw new IllegalArgumentException("Units cannot be null");
+        }
 
-        if (source == null || target == null)
-            throw new IllegalArgumentException("Unit cannot be null");
-
-        if (!Double.isFinite(value))
-            throw new IllegalArgumentException("Invalid value");
-
-        double base = value * source.getFactor();
-        return base / target.getFactor();
+        double base = value * from.getFactor();
+        return base / to.getFactor();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        Length other = (Length) obj;
-
-        return Double.compare(this.toBase(), other.toBase()) == 0;
+    public double getValue() {
+        return value;
     }
 
-
-    @Override
-    public String toString() {
-        return String.format("%.2f %s", value, unit);
+    public LengthUnit getUnit() {
+        return unit;
     }
 }
